@@ -1,0 +1,21 @@
+<div class="markdown__preview"><p>Nessa aula aprenderemos sobre o que é programação imperativa, trabalhar com eventos com a DOM e funções <em>callbacks</em>.</p>
+<pre class="cm-s-omni"><code><span class="cm-comment">// DOM</span><span class="">
+</span><span class="cm-comment">// Document Object Model</span><span class="">
+
+</span><span class="cm-keyword">let</span><span class=""> </span><span class="cm-def">play</span><span class=""> </span><span class="cm-operator">=</span><span class=""> </span><span class="cm-variable">document</span><span class="">.</span><span class="cm-property">querySelector</span><span class="">(</span><span class="cm-string">'.play'</span><span class="">)
+</span><span class="cm-keyword">let</span><span class=""> </span><span class="cm-def">pause</span><span class=""> </span><span class="cm-operator">=</span><span class=""> </span><span class="cm-variable">document</span><span class="">.</span><span class="cm-property">querySelector</span><span class="">(</span><span class="cm-string">'.pause'</span><span class="">)
+</span><span class="cm-comment">// Event-driven</span><span class="">
+</span><span class="cm-comment">// programação imperativa</span><span class="">
+</span><span class="cm-comment">// callback</span><span class="">
+</span><span class="cm-variable">play</span><span class="">.</span><span class="cm-property">addEventListener</span><span class="">(</span><span class="cm-string">'click'</span><span class="">,</span><span class=""> </span><span class="cm-keyword">function</span><span class="">()</span><span class=""> </span><span class="">{
+</span><span class="">  </span><span class="cm-variable">play</span><span class="">.</span><span class="cm-property">classList</span><span class="">.</span><span class="cm-property">add</span><span class="">(</span><span class="cm-string">'hide'</span><span class="">)
+</span><span class="">  </span><span class="cm-variable">pause</span><span class="">.</span><span class="cm-property">classList</span><span class="">.</span><span class="cm-property">remove</span><span class="">(</span><span class="cm-string">'hide'</span><span class="">)
+})
+
+</span><span class="cm-variable">pause</span><span class="">.</span><span class="cm-property">addEventListener</span><span class="">(</span><span class="cm-string">'click'</span><span class="">,</span><span class=""> </span><span class="cm-keyword">function</span><span class="">()</span><span class=""> </span><span class="">{
+</span><span class="">  </span><span class="cm-variable">pause</span><span class="">.</span><span class="cm-property">classList</span><span class="">.</span><span class="cm-property">add</span><span class="">(</span><span class="cm-string">'hide'</span><span class="">)
+</span><span class="">  </span><span class="cm-variable">play</span><span class="">.</span><span class="cm-property">classList</span><span class="">.</span><span class="cm-property">remove</span><span class="">(</span><span class="cm-string">'hide'</span><span class="">)
+})
+</span></code></pre>
+<h1>Código zipado</h1>
+<p><a href="https://storage.googleapis.com/golden-wind/explorer/description-assets/nivel-05/event-driven.zip" rel="noopener noreferrer" target="_blank">event-driven.zip</a></p></div>

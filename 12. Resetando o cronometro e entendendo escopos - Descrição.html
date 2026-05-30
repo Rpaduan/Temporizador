@@ -1,0 +1,96 @@
+<div class="markdown__preview"><p>Nessa aula iremos corrigir mais alguns bugs, resetar o nosso cronômetro e entender a visão geral sobre escopos no JavaScript.</p>
+<pre class="cm-s-omni"><code><span class="cm-keyword">const</span><span class=""> </span><span class="cm-def">buttonPlay</span><span class=""> </span><span class="cm-operator">=</span><span class=""> </span><span class="cm-variable">document</span><span class="">.</span><span class="cm-property">querySelector</span><span class="">(</span><span class="cm-string">'.play'</span><span class="">)
+</span><span class="cm-keyword">const</span><span class=""> </span><span class="cm-def">buttonPause</span><span class=""> </span><span class="cm-operator">=</span><span class=""> </span><span class="cm-variable">document</span><span class="">.</span><span class="cm-property">querySelector</span><span class="">(</span><span class="cm-string">'.pause'</span><span class="">)
+</span><span class="cm-keyword">const</span><span class=""> </span><span class="cm-def">buttonStop</span><span class=""> </span><span class="cm-operator">=</span><span class=""> </span><span class="cm-variable">document</span><span class="">.</span><span class="cm-property">querySelector</span><span class="">(</span><span class="cm-string">'.stop'</span><span class="">)
+</span><span class="cm-keyword">const</span><span class=""> </span><span class="cm-def">buttonSet</span><span class=""> </span><span class="cm-operator">=</span><span class=""> </span><span class="cm-variable">document</span><span class="">.</span><span class="cm-property">querySelector</span><span class="">(</span><span class="cm-string">'.set'</span><span class="">)
+</span><span class="cm-keyword">const</span><span class=""> </span><span class="cm-def">buttonSoundOn</span><span class=""> </span><span class="cm-operator">=</span><span class=""> </span><span class="cm-variable">document</span><span class="">.</span><span class="cm-property">querySelector</span><span class="">(</span><span class="cm-string">'.sound-on'</span><span class="">)
+</span><span class="cm-keyword">const</span><span class=""> </span><span class="cm-def">buttonSoundOff</span><span class=""> </span><span class="cm-operator">=</span><span class=""> </span><span class="cm-variable">document</span><span class="">.</span><span class="cm-property">querySelector</span><span class="">(</span><span class="cm-string">'.sound-off'</span><span class="">)
+</span><span class="cm-keyword">const</span><span class=""> </span><span class="cm-def">minutesDisplay</span><span class=""> </span><span class="cm-operator">=</span><span class=""> </span><span class="cm-variable">document</span><span class="">.</span><span class="cm-property">querySelector</span><span class="">(</span><span class="cm-string">'.minutes'</span><span class="">)
+</span><span class="cm-keyword">const</span><span class=""> </span><span class="cm-def">secondsDisplay</span><span class=""> </span><span class="cm-operator">=</span><span class=""> </span><span class="cm-variable">document</span><span class="">.</span><span class="cm-property">querySelector</span><span class="">(</span><span class="cm-string">'.seconds'</span><span class="">)
+</span><span class="cm-keyword">let</span><span class=""> </span><span class="cm-def">minutes</span><span class=""> </span><span class="cm-operator">=</span><span class=""> </span><span class="cm-variable">Number</span><span class="">(</span><span class="cm-variable">minutesDisplay</span><span class="">.</span><span class="cm-property">textContent</span><span class="">)
+</span><span class="cm-keyword">let</span><span class=""> </span><span class="cm-def">timerTimeOut</span><span class="">
+
+</span><span class="cm-keyword">function</span><span class=""> </span><span class="cm-def">resetControls</span><span class="">()</span><span class=""> </span><span class="">{
+</span><span class="">  </span><span class="cm-variable">buttonPlay</span><span class="">.</span><span class="cm-property">classList</span><span class="">.</span><span class="cm-property">remove</span><span class="">(</span><span class="cm-string">'hide'</span><span class="">)
+</span><span class="">  </span><span class="cm-variable">buttonPause</span><span class="">.</span><span class="cm-property">classList</span><span class="">.</span><span class="cm-property">add</span><span class="">(</span><span class="cm-string">'hide'</span><span class="">)
+</span><span class="">  </span><span class="cm-variable">buttonSet</span><span class="">.</span><span class="cm-property">classList</span><span class="">.</span><span class="cm-property">remove</span><span class="">(</span><span class="cm-string">'hide'</span><span class="">)
+</span><span class="">  </span><span class="cm-variable">buttonStop</span><span class="">.</span><span class="cm-property">classList</span><span class="">.</span><span class="cm-property">add</span><span class="">(</span><span class="cm-string">'hide'</span><span class="">)
+}
+
+</span><span class="cm-keyword">function</span><span class=""> </span><span class="cm-def">updateTimerDisplay</span><span class="">(</span><span class="cm-def">minutes</span><span class="">,</span><span class=""> </span><span class="cm-def">seconds</span><span class="">)</span><span class=""> </span><span class="">{
+</span><span class="">  </span><span class="cm-variable">minutesDisplay</span><span class="">.</span><span class="cm-property">textContent</span><span class=""> </span><span class="cm-operator">=</span><span class=""> </span><span class="cm-variable">String</span><span class="">(</span><span class="cm-variable-2">minutes</span><span class="">).</span><span class="cm-property">padStart</span><span class="">(</span><span class="cm-number">2</span><span class="">,</span><span class=""> </span><span class="cm-string">"0"</span><span class="">)
+</span><span class="">  </span><span class="cm-variable">secondsDisplay</span><span class="">.</span><span class="cm-property">textContent</span><span class=""> </span><span class="cm-operator">=</span><span class=""> </span><span class="cm-variable">String</span><span class="">(</span><span class="cm-variable-2">seconds</span><span class="">).</span><span class="cm-property">padStart</span><span class="">(</span><span class="cm-number">2</span><span class="">,</span><span class=""> </span><span class="cm-string">"0"</span><span class="">)
+}
+
+</span><span class="cm-keyword">function</span><span class=""> </span><span class="cm-def">resetTimer</span><span class="">()</span><span class=""> </span><span class="">{
+</span><span class="">  </span><span class="cm-variable">updateTimerDisplay</span><span class="">(</span><span class="cm-variable">minutes</span><span class="">,</span><span class=""> </span><span class="cm-number">0</span><span class="">)
+</span><span class="">  </span><span class="cm-variable">clearTimeout</span><span class="">(</span><span class="cm-variable">timerTimeOut</span><span class="">)
+}
+
+</span><span class="cm-keyword">function</span><span class=""> </span><span class="cm-def">countdown</span><span class="">(){
+</span><span class="">  </span><span class="cm-variable">timerTimeOut</span><span class=""> </span><span class="cm-operator">=</span><span class=""> </span><span class="cm-variable">setTimeout</span><span class="">(</span><span class="cm-keyword">function</span><span class="">()</span><span class=""> </span><span class="">{
+</span><span class="">    </span><span class="cm-keyword">let</span><span class=""> </span><span class="cm-def">seconds</span><span class=""> </span><span class="cm-operator">=</span><span class="">  </span><span class="cm-variable">Number</span><span class="">(</span><span class="cm-variable">secondsDisplay</span><span class="">.</span><span class="cm-property">textContent</span><span class="">)
+</span><span class="">    </span><span class="cm-keyword">let</span><span class=""> </span><span class="cm-def">minutes</span><span class=""> </span><span class="cm-operator">=</span><span class=""> </span><span class="cm-variable">Number</span><span class="">(</span><span class="cm-variable">minutesDisplay</span><span class="">.</span><span class="cm-property">textContent</span><span class="">)
+
+</span><span class="">    </span><span class="cm-variable">updateTimerDisplay</span><span class="">(</span><span class="cm-variable-2">minutes</span><span class="">,</span><span class=""> </span><span class="cm-number">0</span><span class="">)
+
+</span><span class="">    </span><span class="cm-keyword">if</span><span class=""> </span><span class="">(</span><span class="cm-variable-2">minutes</span><span class=""> </span><span class="cm-operator">&lt;=</span><span class=""> </span><span class="cm-number">0</span><span class="">)</span><span class=""> </span><span class="">{
+</span><span class="">      </span><span class="cm-variable">resetControls</span><span class="">()
+</span><span class="">      </span><span class="cm-keyword">return</span><span class="">
+</span><span class="">    </span><span class="">}
+
+</span><span class="">    </span><span class="cm-keyword">if</span><span class="">(</span><span class=""> </span><span class="cm-variable-2">seconds</span><span class=""> </span><span class="cm-operator">&lt;=</span><span class=""> </span><span class="cm-number">0</span><span class=""> </span><span class="">)</span><span class=""> </span><span class="">{
+</span><span class="">      </span><span class="cm-variable-2">seconds</span><span class=""> </span><span class="cm-operator">=</span><span class=""> </span><span class="cm-number">3</span><span class="">
+</span><span class="">      </span><span class="cm-operator">--</span><span class="cm-variable-2">minutes</span><span class="">
+</span><span class="">    </span><span class="">}
+
+</span><span class="">    </span><span class="cm-variable">updateTimerDisplay</span><span class="">(</span><span class="cm-variable-2">minutes</span><span class="">,</span><span class=""> </span><span class="cm-variable">String</span><span class="">(</span><span class="cm-variable-2">seconds</span><span class=""> </span><span class="cm-operator">-</span><span class=""> </span><span class="cm-number">1</span><span class="">))
+
+</span><span class="">    </span><span class="cm-variable">countdown</span><span class="">()
+</span><span class="">  </span><span class="">},</span><span class=""> </span><span class="cm-number">1000</span><span class="">)
+}
+
+</span><span class="cm-variable">buttonPlay</span><span class="">.</span><span class="cm-property">addEventListener</span><span class="">(</span><span class="cm-string">'click'</span><span class="">,</span><span class=""> </span><span class="cm-keyword">function</span><span class="">()</span><span class=""> </span><span class="">{
+</span><span class="">  </span><span class="cm-variable">buttonPlay</span><span class="">.</span><span class="cm-property">classList</span><span class="">.</span><span class="cm-property">add</span><span class="">(</span><span class="cm-string">'hide'</span><span class="">)
+</span><span class="">  </span><span class="cm-variable">buttonPause</span><span class="">.</span><span class="cm-property">classList</span><span class="">.</span><span class="cm-property">remove</span><span class="">(</span><span class="cm-string">'hide'</span><span class="">)
+</span><span class="">  </span><span class="cm-variable">buttonSet</span><span class="">.</span><span class="cm-property">classList</span><span class="">.</span><span class="cm-property">add</span><span class="">(</span><span class="cm-string">'hide'</span><span class="">)
+</span><span class="">  </span><span class="cm-variable">buttonStop</span><span class="">.</span><span class="cm-property">classList</span><span class="">.</span><span class="cm-property">remove</span><span class="">(</span><span class="cm-string">'hide'</span><span class="">)
+
+</span><span class="">  </span><span class="cm-variable">countdown</span><span class="">()
+
+})
+
+</span><span class="cm-variable">buttonPause</span><span class="">.</span><span class="cm-property">addEventListener</span><span class="">(</span><span class="cm-string">'click'</span><span class="">,</span><span class=""> </span><span class="cm-keyword">function</span><span class="">()</span><span class=""> </span><span class="">{
+</span><span class="">  </span><span class="cm-variable">buttonPause</span><span class="">.</span><span class="cm-property">classList</span><span class="">.</span><span class="cm-property">add</span><span class="">(</span><span class="cm-string">'hide'</span><span class="">)
+</span><span class="">  </span><span class="cm-variable">buttonPlay</span><span class="">.</span><span class="cm-property">classList</span><span class="">.</span><span class="cm-property">remove</span><span class="">(</span><span class="cm-string">'hide'</span><span class="">)
+</span><span class="">  </span><span class="cm-variable">clearTimeout</span><span class="">(</span><span class="cm-variable">timerTimeOut</span><span class="">)
+})
+
+</span><span class="cm-variable">buttonStop</span><span class="">.</span><span class="cm-property">addEventListener</span><span class="">(</span><span class="cm-string">'click'</span><span class="">,</span><span class=""> </span><span class="cm-keyword">function</span><span class="">()</span><span class=""> </span><span class="">{
+</span><span class="">  </span><span class="cm-variable">resetControls</span><span class="">()
+</span><span class="">  </span><span class="cm-variable">resetTimer</span><span class="">()
+})
+
+</span><span class="cm-variable">buttonSoundOff</span><span class="">.</span><span class="cm-property">addEventListener</span><span class="">(</span><span class="cm-string">'click'</span><span class="">,</span><span class=""> </span><span class="cm-keyword">function</span><span class="">()</span><span class=""> </span><span class="">{
+</span><span class="">  </span><span class="cm-variable">buttonSoundOn</span><span class="">.</span><span class="cm-property">classList</span><span class="">.</span><span class="cm-property">remove</span><span class="">(</span><span class="cm-string">'hide'</span><span class="">)
+</span><span class="">  </span><span class="cm-variable">buttonSoundOff</span><span class="">.</span><span class="cm-property">classList</span><span class="">.</span><span class="cm-property">add</span><span class="">(</span><span class="cm-string">'hide'</span><span class="">)
+})
+
+</span><span class="cm-variable">buttonSoundOn</span><span class="">.</span><span class="cm-property">addEventListener</span><span class="">(</span><span class="cm-string">'click'</span><span class="">,</span><span class=""> </span><span class="cm-keyword">function</span><span class="">()</span><span class=""> </span><span class="">{
+</span><span class="">  </span><span class="cm-variable">buttonSoundOn</span><span class="">.</span><span class="cm-property">classList</span><span class="">.</span><span class="cm-property">add</span><span class="">(</span><span class="cm-string">'hide'</span><span class="">)
+</span><span class="">  </span><span class="cm-variable">buttonSoundOff</span><span class="">.</span><span class="cm-property">classList</span><span class="">.</span><span class="cm-property">remove</span><span class="">(</span><span class="cm-string">'hide'</span><span class="">)
+})
+
+</span><span class="cm-variable">buttonSet</span><span class="">.</span><span class="cm-property">addEventListener</span><span class="">(</span><span class="cm-string">'click'</span><span class="">,</span><span class=""> </span><span class="cm-keyword">function</span><span class="">()</span><span class=""> </span><span class="">{
+</span><span class="">  </span><span class="cm-keyword">let</span><span class=""> </span><span class="cm-def">newMinutes</span><span class=""> </span><span class="cm-operator">=</span><span class=""> </span><span class="cm-variable">prompt</span><span class="">(</span><span class="cm-string">'Quantos minutos?'</span><span class="">)
+</span><span class="">  </span><span class="cm-keyword">if</span><span class=""> </span><span class="">(</span><span class="cm-operator">!</span><span class="cm-variable-2">newMinutes</span><span class="">)</span><span class=""> </span><span class="">{
+</span><span class="">    </span><span class="cm-variable">resetTimer</span><span class="">()
+</span><span class="">    </span><span class="cm-keyword">return</span><span class="">
+</span><span class="">  </span><span class="">}
+
+</span><span class="">  </span><span class="cm-variable">minutes</span><span class=""> </span><span class="cm-operator">=</span><span class=""> </span><span class="cm-variable-2">newMinutes</span><span class="">
+</span><span class="">  </span><span class="cm-variable">updateTimerDisplay</span><span class="">(</span><span class="cm-variable">minutes</span><span class="">,</span><span class=""> </span><span class="cm-number">0</span><span class="">)
+})
+</span></code></pre>
+<h1>Código zipado</h1>
+<p><a href="https://storage.googleapis.com/golden-wind/explorer/description-assets/nivel-05/resetando-cronometro.zip" rel="noopener noreferrer" target="_blank">resetando-cronometro.zip</a></p></div>

@@ -1,0 +1,115 @@
+<div class="markdown__preview"><p>Nessa aula daremos continuidade na modularização e resolveremos alguns erros do nosso projeto.</p>
+<p><code node="[object Object]">index.js</code></p>
+<pre class="cm-s-omni"><code><span class="">```jsx
+// default import
+import resetControls from "./controls.js"
+
+// named import
+import { countdown, resetTimer } from "./timer.js"
+
+const buttonPlay = document.querySelector('.play')
+const buttonPause = document.querySelector('.pause')
+const buttonStop = document.querySelector('.stop')
+const buttonSet = document.querySelector('.set')
+const buttonSoundOn = document.querySelector('.sound-on')
+const buttonSoundOff = document.querySelector('.sound-off')
+const minutesDisplay = document.querySelector('.minutes')
+const secondsDisplay = document.querySelector('.seconds')
+let minutes = Number(minutesDisplay.textContent)
+let timerTimeOut
+
+buttonPlay.addEventListener('click', function() {
+  buttonPlay.classList.add('hide')
+  buttonPause.classList.remove('hide')
+  buttonSet.classList.add('hide')
+  buttonStop.classList.remove('hide')
+
+  countdown(secondsDisplay, minutesDisplay, resetControls)
+
+})
+
+buttonPause.addEventListener('click', function() {
+  buttonPause.classList.add('hide')
+  buttonPlay.classList.remove('hide')
+  clearTimeout(timerTimeOut)
+})
+
+buttonStop.addEventListener('click', function() {
+  resetControls()
+  resetTimer()
+})
+
+buttonSoundOff.addEventListener('click', function() {
+  buttonSoundOn.classList.remove('hide')
+  buttonSoundOff.classList.add('hide')
+})
+
+buttonSoundOn.addEventListener('click', function() {
+  buttonSoundOn.classList.add('hide')
+  buttonSoundOff.classList.remove('hide')
+})
+
+buttonSet.addEventListener('click', function() {
+  let newMinutes = prompt('Quantos minutos?')
+  if (!newMinutes) {
+    resetTimer()
+    return
+  }
+
+  minutes = newMinutes
+  updateTimerDisplay(minutes, 0)
+})
+```
+</span></code></pre>
+<p><code node="[object Object]">controls.js</code></p>
+<pre class="cm-s-omni"><code><span class="">```jsx
+function resetControls() {
+  buttonPlay.classList.remove('hide')
+  buttonPause.classList.add('hide')
+  buttonSet.classList.remove('hide')
+  buttonStop.classList.add('hide')
+}
+
+export default resetControls
+```
+</span></code></pre>
+<p><code node="[object Object]">timer.js</code></p>
+<pre class="cm-s-omni"><code><span class="">```jsx
+function updateTimerDisplay(minutes, seconds) {
+  minutesDisplay.textContent = String(minutes).padStart(2, "0")
+  secondsDisplay.textContent = String(seconds).padStart(2, "0")
+}
+
+function resetTimer() {
+  updateTimerDisplay(minutes, 0)
+  clearTimeout(timerTimeOut)
+}
+
+function countdown(){
+  timerTimeOut = setTimeout(function() {
+    let seconds =  Number(secondsDisplay.textContent)
+    let minutes = Number(minutesDisplay.textContent)
+
+    updateTimerDisplay(minutes, 0)
+
+    if (minutes &lt;= 0) {
+      resetControls()
+      return
+    }
+
+    if( seconds &lt;= 0 ) {
+      seconds = 3
+      --minutes
+    }
+
+    updateTimerDisplay(minutes, String(seconds - 1))
+
+    countdown()
+  }, 1000)
+}
+
+export {  }
+```
+</span></code></pre>
+<h1>Código zipado</h1>
+<p><a href="https://storage.googleapis.com/golden-wind/explorer/description-assets/nivel-05/continuando-modularizacao.zip" rel="noopener noreferrer" target="_blank">continuando-modularizacao.zip</a></p></div>
