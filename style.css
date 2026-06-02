@@ -1,0 +1,72 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+:root {
+    --bg-color: #121214;
+    --primary-color: hsl(var(--base-color), 100%, 63%);
+    --base-color: 194;
+    --primary-color-light: hsla(var(--base-color), 100%, 63%, 0.13);
+    --text-color: #ffff;
+    font-size: 62.5%;
+}
+
+body {
+    font-family: "Roboto", sans-serif;
+    background: var(--bg-color);
+    color: var(--text-color);
+    display: grid;
+    min-height: 100vh;
+}
+
+main {
+    justify-self: center;
+    align-self: end;
+}
+
+#timer {
+    font-size: clamp(4rem, 4rem + 10vw, 8.8rem);
+    font-weight: bold;
+    display: flex;
+    margin-bottom: 1.6rem;
+}
+
+#controls {
+    background: var(--primary-color-light);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 9999px;
+    gap: 3.2rem;
+    width: clamp(10rem, 10rem + 30vw, 22.8rem);
+    height: clamp(8rem, 5rem + 10vw, 10.8rem);
+}
+
+button {
+    background: transparent;
+    border: none;
+    cursor: pointer;
+}
+
+button svg {
+    width: clamp(3.2rem, 2rem + 12vw, 6.4rem);
+}
+
+.play svg path,
+.pause svg path,
+.sound-on svg path {
+    background: var(--primary-color);
+}
+
+.hide {
+    display: none;
+}
+
+footer {
+    justify-self: end;
+    align-self: end;
+    padding: 0 4rem 3.2rem;
+}
+
